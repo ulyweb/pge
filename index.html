@@ -145,7 +145,8 @@
 
         function updateDashboard() {
             const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            // Added second: '2-digit' right here:
+            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
             
             const hour = now.getHours(); 
             
@@ -225,7 +226,7 @@
         }
 
         loadChores();
-        setInterval(updateDashboard, 1000);
+        setInterval(updateDashboard, 1000); // This updates the clock every 1000 milliseconds (1 second)
         updateDashboard(); 
     </script>
 </body>
