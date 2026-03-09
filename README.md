@@ -1,3 +1,9 @@
+
+
+
+
+```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Power Plan</title>
     <style>
+        /* Base styles for Desktop & Tablet */
         body { 
             font-family: Arial, sans-serif; 
             background-color: #2c3e50; 
@@ -16,7 +23,6 @@
         
         h1 { font-size: 2.5em; text-shadow: 2px 2px 4px #000; margin-bottom: 5px; }
         
-        /* New Subtitle Style */
         .subtitle { 
             font-size: 1.8em; 
             color: #4da6ff; 
@@ -71,6 +77,20 @@
             animation: pulse 2s infinite;
             border: 6px solid #fff;
             transform: scale(1.03);
+        }
+
+        /* Responsive styles for Mobile Devices */
+        @media (max-width: 600px) {
+            body { font-size: 100%; padding: 10px; }
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1.4em; }
+            .dashboard { gap: 15px; }
+            .card { padding: 20px; border-radius: 15px; }
+            .icon { font-size: 3em; }
+            h2 { font-size: 1.8em; }
+            .price { font-size: 1.3em; padding: 8px 15px; }
+            .action { font-size: 1.3em; }
+            .active-now { transform: scale(1.02); }
         }
     </style>
 </head>
@@ -129,3 +149,6 @@
     </script>
 </body>
 </html>
+
+
+```
