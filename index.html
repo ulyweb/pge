@@ -51,15 +51,13 @@
         .features-container { display: flex; gap: 20px; max-width: 800px; margin: 30px auto; flex-wrap: wrap; }
         .feature-card { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; flex: 1; min-width: 300px; }
         
-        /* Calculator Buttons */
-        .app-btn { background: #4da6ff; border: none; padding: 12px; border-radius: 8px; color: #fff; font-size: 1em; font-weight: bold; cursor: pointer; margin: 5px; width: 45%; transition: 0.2s; }
-        .app-btn:hover { background: #1a8cff; }
+        /* Checkbox Lists */
+        .check-list { text-align: left; font-size: 1.1em; margin-top: 15px; }
+        .check-list label { display: block; margin-bottom: 10px; cursor: pointer; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;}
+        .check-list input { transform: scale(1.5); margin-right: 15px; cursor: pointer; }
+        
         #calc-result { margin-top: 15px; font-weight: bold; font-size: 1.2em; color: #ffeb3b; min-height: 60px; }
-
-        /* Chore Tracker */
-        .chore-list { text-align: left; font-size: 1.2em; margin-top: 15px; }
-        .chore-list label { display: block; margin-bottom: 15px; cursor: pointer; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;}
-        .chore-list input { transform: scale(1.5); margin-right: 15px; cursor: pointer; }
+        .app-btn { background: #dc3545; border: none; padding: 12px; border-radius: 8px; color: #fff; font-size: 1em; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; transition: 0.2s; }
 
         /* Mobile Responsive */
         @media (max-width: 600px) {
@@ -69,7 +67,6 @@
             .icon { font-size: 2.5em; }
             h2 { font-size: 1.5em; }
             .price { font-size: 1.2em; }
-            .app-btn { width: 100%; }
         }
     </style>
 </head>
@@ -109,23 +106,28 @@
         
         <div class="feature-card">
             <h3>🧮 Appliance Calculator</h3>
-            <p>Tap to see how much a cycle costs right now:</p>
-            <button class="app-btn" onclick="calcCost('Electric Dryer', 3.0)">👕 Dryer</button>
-            <button class="app-btn" onclick="calcCost('Electric Oven', 2.5)">🍽️ Oven</button>
-            <button class="app-btn" onclick="calcCost('Dishwasher', 1.5)">🌊 Dishwasher</button>
-            <button class="app-btn" onclick="calcCost('Gaming PC', 0.5)">🎮 Gaming PC</button>
-            <div id="calc-result">Tap an appliance to estimate cost.</div>
+            <p style="font-size: 0.9em;">Select multiple appliances to estimate the total cost of running them right now:</p>
+            <div class="check-list" id="appliance-list">
+                <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 👕 Dryer (1 cycle)</label>
+                <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🌊 Washer (1 cycle)</label>
+                <label><input type="checkbox" value="2.5" onchange="calcTotal()"> 🍽️ Oven (1 hour)</label>
+                <label><input type="checkbox" value="1.5" onchange="calcTotal()"> 🍜 Microwave (1 hour)</label>
+                <label><input type="checkbox" value="3.5" onchange="calcTotal()"> ❄️ Central AC (1 hour)</label>
+                <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 🔥 Central Heater (1 hour)</label>
+                <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🔌 Portable >300W (1 hour)</label>
+            </div>
+            <div id="calc-result">Select appliances to estimate cost.</div>
         </div>
 
         <div class="feature-card">
             <h3>✅ Daily Green-Light Chores</h3>
-            <p>Check off tasks when completed:</p>
-            <div class="chore-list">
+            <p style="font-size: 0.9em;">Check off tasks when completed:</p>
+            <div class="check-list">
                 <label><input type="checkbox" id="chore1" onchange="saveChores()"> 🚗 Charge the Tesla</label>
                 <label><input type="checkbox" id="chore2" onchange="saveChores()"> 🌊 Run the Dishwasher</label>
                 <label><input type="checkbox" id="chore3" onchange="saveChores()"> 👕 Do a load of Laundry</label>
             </div>
-            <button class="app-btn" style="width:100%; background:#dc3545; margin-top:10px;" onclick="resetChores()">Reset List for Tomorrow</button>
+            <button class="app-btn" onclick="resetChores()">Reset List for Tomorrow</button>
         </div>
 
     </div>
@@ -155,20 +157,35 @@
             } else if (hour >= 16 && hour < 21) {
                 document.getElementById('red-card').classList.add('active-now');
                 currentRate = rates.red;
-                alertBanner.style.display = 'block'; // Show Red Alert!
+                alertBanner.style.display = 'block';
             } else {
                 document.getElementById('yellow-card').classList.add('active-now');
                 currentRate = rates.yellow;
                 alertBanner.style.display = 'none';
             }
+            // Update the calculator live if time crosses a threshold
+            calcTotal();
         }
         
-        // Calculator Function
-        function calcCost(appliance, kwh) {
-            const costNow = (kwh * currentRate).toFixed(2);
-            const costGreen = (kwh * rates.green).toFixed(2);
+        // New Calculator Function for Multiple Checkboxes
+        function calcTotal() {
+            const checkboxes = document.querySelectorAll('#appliance-list input[type="checkbox"]:checked');
+            let totalKwh = 0;
             
-            let message = `Running the ${appliance} right now costs $${costNow}.`;
+            // Loop through every checked box and add its value to the total
+            checkboxes.forEach(box => {
+                totalKwh += parseFloat(box.value);
+            });
+            
+            if(totalKwh === 0) {
+                document.getElementById('calc-result').innerHTML = "Select appliances to estimate cost.";
+                return;
+            }
+
+            const costNow = (totalKwh * currentRate).toFixed(2);
+            const costGreen = (totalKwh * rates.green).toFixed(2);
+            
+            let message = `Running these right now costs $${costNow}.`;
             
             if (currentRate > rates.green) {
                 const savings = (costNow - costGreen).toFixed(2);
@@ -179,7 +196,7 @@
             document.getElementById('calc-result').innerHTML = message;
         }
 
-        // Chore Tracker Functions (Saves to Browser)
+        // Chore Tracker Functions
         function saveChores() {
             localStorage.setItem('chore1', document.getElementById('chore1').checked);
             localStorage.setItem('chore2', document.getElementById('chore2').checked);
