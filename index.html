@@ -116,6 +116,16 @@
                 <label><input type="checkbox" value="3.5" onchange="calcTotal()"> ❄️ Central AC (1 hour)</label>
                 <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 🔥 Central Heater (1 hour)</label>
                 <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🔌 Portable >300W (1 hour)</label>
+                
+                <label><input type="checkbox" value="1.0" onchange="calcTotal()"> 🏃‍♂️ Nordictrack Treadmill (1 hour)</label>
+                <label><input type="checkbox" value="0.3" onchange="calcTotal()"> 🧇 Waffle Maker (1 batch)</label>
+                <label><input type="checkbox" value="0.15" onchange="calcTotal()"> 💻 Workstation Laptop (1 hour)</label>
+                <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🖥️ Workstation Desktop (1 hour)</label>
+                <label><input type="checkbox" value="0.2" onchange="calcTotal()"> 🖨️ Bambu Lab P1S 3D Printer (1 hour)</label>
+                <label><input type="checkbox" value="1.5" onchange="calcTotal()"> 💨 6 Gallon Air Compressor (1 hour)</label>
+                <label><input type="checkbox" value="0.1" onchange="calcTotal()"> 📄 Paper Shredder (1 session)</label>
+                <label><input type="checkbox" value="0.4" onchange="calcTotal()"> 💇‍♀️ Hair Dryer (1 session)</label>
+                <label><input type="checkbox" value="0.05" onchange="calcTotal()"> 🌬️ Air Purifier (1 hour)</label>
             </div>
             <div id="calc-result">Select appliances to estimate cost.</div>
         </div>
@@ -133,6 +143,16 @@
                 <label><input type="checkbox" id="chore7" onchange="saveChores()"> ❄️ Set Central AC</label>
                 <label><input type="checkbox" id="chore8" onchange="saveChores()"> 🔥 Set Central Heater</label>
                 <label><input type="checkbox" id="chore9" onchange="saveChores()"> 🔌 Use Portable >300W</label>
+                
+                <label><input type="checkbox" id="chore10" onchange="saveChores()"> 🏃‍♂️ Run on the Treadmill</label>
+                <label><input type="checkbox" id="chore11" onchange="saveChores()"> 🧇 Make Waffles</label>
+                <label><input type="checkbox" id="chore12" onchange="saveChores()"> 💻 Use Laptop Workstation</label>
+                <label><input type="checkbox" id="chore13" onchange="saveChores()"> 🖥️ Use Desktop Workstation</label>
+                <label><input type="checkbox" id="chore14" onchange="saveChores()"> 🖨️ Run 3D Printer</label>
+                <label><input type="checkbox" id="chore15" onchange="saveChores()"> 💨 Use Air Compressor</label>
+                <label><input type="checkbox" id="chore16" onchange="saveChores()"> 📄 Shred Papers</label>
+                <label><input type="checkbox" id="chore17" onchange="saveChores()"> 💇‍♀️ Use Hair Dryer</label>
+                <label><input type="checkbox" id="chore18" onchange="saveChores()"> 🌬️ Run Air Purifier</label>
             </div>
             <button class="app-btn" onclick="resetChores()">Reset List for Tomorrow</button>
         </div>
@@ -145,7 +165,6 @@
 
         function updateDashboard() {
             const now = new Date();
-            // Added second: '2-digit' right here:
             document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
             
             const hour = now.getHours(); 
@@ -199,15 +218,15 @@
             document.getElementById('calc-result').innerHTML = message;
         }
 
-        // Chore Tracker Functions using a loop
+        // Chore Tracker Functions using a loop updated for 18 items
         function saveChores() {
-            for(let i = 1; i <= 9; i++) {
+            for(let i = 1; i <= 18; i++) {
                 localStorage.setItem('chore' + i, document.getElementById('chore' + i).checked);
             }
         }
 
         function loadChores() {
-            for(let i = 1; i <= 9; i++) {
+            for(let i = 1; i <= 18; i++) {
                 let checkbox = document.getElementById('chore' + i);
                 if (checkbox) {
                     checkbox.checked = JSON.parse(localStorage.getItem('chore' + i) || 'false');
@@ -216,7 +235,7 @@
         }
 
         function resetChores() {
-            for(let i = 1; i <= 9; i++) {
+            for(let i = 1; i <= 18; i++) {
                 let checkbox = document.getElementById('chore' + i);
                 if (checkbox) {
                     checkbox.checked = false;
@@ -226,7 +245,7 @@
         }
 
         loadChores();
-        setInterval(updateDashboard, 1000); // This updates the clock every 1000 milliseconds (1 second)
+        setInterval(updateDashboard, 1000);
         updateDashboard(); 
     </script>
 </body>
