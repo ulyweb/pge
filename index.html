@@ -22,7 +22,7 @@
             margin-top: 0; margin-bottom: 20px; font-weight: bold;
         }
 
-        /* 🚨 Alert Banner */
+        /* Alert Banner */
         #red-alert {
             background: #dc3545; color: white; padding: 15px; font-weight: bold; 
             font-size: 1.5em; border-radius: 10px; margin-bottom: 20px; 
@@ -47,7 +47,7 @@
         .active-now { animation: pulse 2s infinite; border: 6px solid #fff; transform: scale(1.02); }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8); } 70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
-        /* New Features Section */
+        /* Features Section */
         .features-container { display: flex; gap: 20px; max-width: 800px; margin: 30px auto; flex-wrap: wrap; }
         .feature-card { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; flex: 1; min-width: 300px; }
         
@@ -110,7 +110,8 @@
             <div class="check-list" id="appliance-list">
                 <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 👕 Dryer (1 cycle)</label>
                 <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🌊 Washer (1 cycle)</label>
-                <label><input type="checkbox" value="2.5" onchange="calcTotal()"> 🍽️ Oven (1 hour)</label>
+                <label><input type="checkbox" value="1.5" onchange="calcTotal()"> 🍽️ Dishwasher (1 cycle)</label>
+                <label><input type="checkbox" value="2.5" onchange="calcTotal()"> 🍳 Oven (1 hour)</label>
                 <label><input type="checkbox" value="1.5" onchange="calcTotal()"> 🍜 Microwave (1 hour)</label>
                 <label><input type="checkbox" value="3.5" onchange="calcTotal()"> ❄️ Central AC (1 hour)</label>
                 <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 🔥 Central Heater (1 hour)</label>
@@ -120,12 +121,18 @@
         </div>
 
         <div class="feature-card">
-            <h3>✅ Daily Green-Light Chores</h3>
-            <p style="font-size: 0.9em;">Check off tasks when completed:</p>
+            <h3>✅ Daily Green-Light Tracking</h3>
+            <p style="font-size: 0.9em;">Check off tasks when completed or correctly set:</p>
             <div class="check-list">
                 <label><input type="checkbox" id="chore1" onchange="saveChores()"> 🚗 Charge the Tesla</label>
-                <label><input type="checkbox" id="chore2" onchange="saveChores()"> 🌊 Run the Dishwasher</label>
-                <label><input type="checkbox" id="chore3" onchange="saveChores()"> 👕 Do a load of Laundry</label>
+                <label><input type="checkbox" id="chore2" onchange="saveChores()"> 👕 Run the Dryer</label>
+                <label><input type="checkbox" id="chore3" onchange="saveChores()"> 🌊 Run the Washer</label>
+                <label><input type="checkbox" id="chore4" onchange="saveChores()"> 🍽️ Run the Dishwasher</label>
+                <label><input type="checkbox" id="chore5" onchange="saveChores()"> 🍳 Use the Oven</label>
+                <label><input type="checkbox" id="chore6" onchange="saveChores()"> 🍜 Use the Microwave</label>
+                <label><input type="checkbox" id="chore7" onchange="saveChores()"> ❄️ Set Central AC</label>
+                <label><input type="checkbox" id="chore8" onchange="saveChores()"> 🔥 Set Central Heater</label>
+                <label><input type="checkbox" id="chore9" onchange="saveChores()"> 🔌 Use Portable >300W</label>
             </div>
             <button class="app-btn" onclick="resetChores()">Reset List for Tomorrow</button>
         </div>
@@ -133,7 +140,6 @@
     </div>
 
     <script>
-        // PG&E EV2-A Rates
         const rates = { green: 0.39, yellow: 0.58, red: 0.61 };
         let currentRate = rates.green;
 
@@ -149,7 +155,6 @@
             
             const alertBanner = document.getElementById('red-alert');
 
-            // Time Logic & Rate Assignment
             if (hour >= 0 && hour < 15) {
                 document.getElementById('green-card').classList.add('active-now');
                 currentRate = rates.green;
@@ -163,16 +168,13 @@
                 currentRate = rates.yellow;
                 alertBanner.style.display = 'none';
             }
-            // Update the calculator live if time crosses a threshold
             calcTotal();
         }
         
-        // New Calculator Function for Multiple Checkboxes
         function calcTotal() {
             const checkboxes = document.querySelectorAll('#appliance-list input[type="checkbox"]:checked');
             let totalKwh = 0;
             
-            // Loop through every checked box and add its value to the total
             checkboxes.forEach(box => {
                 totalKwh += parseFloat(box.value);
             });
@@ -196,27 +198,32 @@
             document.getElementById('calc-result').innerHTML = message;
         }
 
-        // Chore Tracker Functions
+        // Chore Tracker Functions using a loop
         function saveChores() {
-            localStorage.setItem('chore1', document.getElementById('chore1').checked);
-            localStorage.setItem('chore2', document.getElementById('chore2').checked);
-            localStorage.setItem('chore3', document.getElementById('chore3').checked);
+            for(let i = 1; i <= 9; i++) {
+                localStorage.setItem('chore' + i, document.getElementById('chore' + i).checked);
+            }
         }
 
         function loadChores() {
-            document.getElementById('chore1').checked = JSON.parse(localStorage.getItem('chore1') || 'false');
-            document.getElementById('chore2').checked = JSON.parse(localStorage.getItem('chore2') || 'false');
-            document.getElementById('chore3').checked = JSON.parse(localStorage.getItem('chore3') || 'false');
+            for(let i = 1; i <= 9; i++) {
+                let checkbox = document.getElementById('chore' + i);
+                if (checkbox) {
+                    checkbox.checked = JSON.parse(localStorage.getItem('chore' + i) || 'false');
+                }
+            }
         }
 
         function resetChores() {
-            document.getElementById('chore1').checked = false;
-            document.getElementById('chore2').checked = false;
-            document.getElementById('chore3').checked = false;
+            for(let i = 1; i <= 9; i++) {
+                let checkbox = document.getElementById('chore' + i);
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+            }
             saveChores();
         }
 
-        // Start everything up!
         loadChores();
         setInterval(updateDashboard, 1000);
         updateDashboard(); 
