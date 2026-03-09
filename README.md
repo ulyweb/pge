@@ -11,86 +11,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Power Plan</title>
     <style>
-        /* Base styles for Desktop & Tablet */
+        /* Base styles */
         body { 
             font-family: Arial, sans-serif; 
             background-color: #2c3e50; 
             color: #fff; 
             padding: 20px; 
             text-align: center;
-            font-size: 140%; 
+            font-size: 130%; 
         }
         
         h1 { font-size: 2.5em; text-shadow: 2px 2px 4px #000; margin-bottom: 5px; }
         
         .subtitle { 
-            font-size: 1.8em; 
-            color: #4da6ff; 
-            text-shadow: 1px 1px 3px #000; 
-            margin-top: 0; 
-            margin-bottom: 20px; 
-            font-weight: bold;
+            font-size: 1.5em; color: #4da6ff; text-shadow: 1px 1px 3px #000; 
+            margin-top: 0; margin-bottom: 20px; font-weight: bold;
+        }
+
+        /* Alert Banner */
+        #red-alert {
+            background: #dc3545; color: white; padding: 15px; font-weight: bold; 
+            font-size: 1.5em; border-radius: 10px; margin-bottom: 20px; 
+            animation: flash 2s infinite; display: none;
         }
         
-        .dashboard { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 30px; 
-            max-width: 800px; 
-            margin: 0 auto; 
-        }
+        @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         
-        .card { 
-            padding: 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
-            border: 6px solid transparent;
-        }
+        .dashboard { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
         
-        .icon { font-size: 4em; margin-bottom: 10px; }
+        .card { padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border: 6px solid transparent; }
+        .icon { font-size: 3.5em; margin-bottom: 10px; }
         
         .green-light { background: linear-gradient(145deg, #1e7e34, #28a745); }
         .yellow-light { background: linear-gradient(145deg, #d39e00, #ffc107); color: #000; }
         .red-light { background: linear-gradient(145deg, #bd2130, #dc3545); }
         
-        h2 { font-size: 2.2em; margin: 10px 0; }
-        
-        .price { 
-            font-size: 1.6em; 
-            font-weight: bold; 
-            background: rgba(255,255,255,0.3); 
-            display: inline-block; 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            margin: 15px 0; 
-        }
-        
-        .action { font-size: 1.5em; font-weight: bold; }
+        h2 { font-size: 2em; margin: 10px 0; }
+        .price { font-size: 1.4em; font-weight: bold; background: rgba(255,255,255,0.3); display: inline-block; padding: 10px 20px; border-radius: 10px; margin: 10px 0; }
+        .action { font-size: 1.3em; font-weight: bold; }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8); }
-            70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
-        
-        .active-now {
-            animation: pulse 2s infinite;
-            border: 6px solid #fff;
-            transform: scale(1.03);
-        }
+        .active-now { animation: pulse 2s infinite; border: 6px solid #fff; transform: scale(1.02); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8); } 70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
-        /* Responsive styles for Mobile Devices */
+        /* Features Section */
+        .features-container { display: flex; gap: 20px; max-width: 800px; margin: 30px auto; flex-wrap: wrap; }
+        .feature-card { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; flex: 1; min-width: 300px; }
+        
+        /* Checkbox Lists */
+        .check-list { text-align: left; font-size: 1.1em; margin-top: 15px; }
+        .check-list label { display: block; margin-bottom: 10px; cursor: pointer; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;}
+        .check-list input { transform: scale(1.5); margin-right: 15px; cursor: pointer; }
+        
+        #calc-result { margin-top: 15px; font-weight: bold; font-size: 1.2em; color: #ffeb3b; min-height: 60px; }
+        .app-btn { background: #dc3545; border: none; padding: 12px; border-radius: 8px; color: #fff; font-size: 1em; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; transition: 0.2s; }
+
+        /* Mobile Responsive */
         @media (max-width: 600px) {
             body { font-size: 100%; padding: 10px; }
             h1 { font-size: 2em; }
-            .subtitle { font-size: 1.4em; }
-            .dashboard { gap: 15px; }
-            .card { padding: 20px; border-radius: 15px; }
-            .icon { font-size: 3em; }
-            h2 { font-size: 1.8em; }
-            .price { font-size: 1.3em; padding: 8px 15px; }
-            .action { font-size: 1.3em; }
-            .active-now { transform: scale(1.02); }
+            .subtitle { font-size: 1.2em; }
+            .icon { font-size: 2.5em; }
+            h2 { font-size: 1.5em; }
+            .price { font-size: 1.2em; }
         }
     </style>
 </head>
@@ -99,7 +81,9 @@
     <h1>⚡ Live Power Dashboard ⚡</h1>
     <div class="subtitle">PG&E EV2-A Plan</div>
     
-    <p style="font-size: 1.8em; font-weight: bold;">Current Time: <span id="clock">Loading...</span></p>
+    <div id="red-alert">⚠️ RED LIGHT ACTIVE: Power down heavy appliances! ⚠️</div>
+    
+    <p style="font-size: 1.5em; font-weight: bold;">Current Time: <span id="clock">Loading...</span></p>
 
     <div class="dashboard">
         <div id="green-card" class="card green-light">
@@ -124,27 +108,131 @@
         </div>
     </div>
 
+    <div class="features-container">
+        
+        <div class="feature-card">
+            <h3>🧮 Appliance Calculator</h3>
+            <p style="font-size: 0.9em;">Select multiple appliances to estimate the total cost of running them right now:</p>
+            <div class="check-list" id="appliance-list">
+                <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 👕 Dryer (1 cycle)</label>
+                <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🌊 Washer (1 cycle)</label>
+                <label><input type="checkbox" value="1.5" onchange="calcTotal()"> 🍽️ Dishwasher (1 cycle)</label>
+                <label><input type="checkbox" value="2.5" onchange="calcTotal()"> 🍳 Oven (1 hour)</label>
+                <label><input type="checkbox" value="1.5" onchange="calcTotal()"> 🍜 Microwave (1 hour)</label>
+                <label><input type="checkbox" value="3.5" onchange="calcTotal()"> ❄️ Central AC (1 hour)</label>
+                <label><input type="checkbox" value="3.0" onchange="calcTotal()"> 🔥 Central Heater (1 hour)</label>
+                <label><input type="checkbox" value="0.5" onchange="calcTotal()"> 🔌 Portable >300W (1 hour)</label>
+            </div>
+            <div id="calc-result">Select appliances to estimate cost.</div>
+        </div>
+
+        <div class="feature-card">
+            <h3>✅ Daily Green-Light Tracking</h3>
+            <p style="font-size: 0.9em;">Check off tasks when completed or correctly set:</p>
+            <div class="check-list">
+                <label><input type="checkbox" id="chore1" onchange="saveChores()"> 🚗 Charge the Tesla</label>
+                <label><input type="checkbox" id="chore2" onchange="saveChores()"> 👕 Run the Dryer</label>
+                <label><input type="checkbox" id="chore3" onchange="saveChores()"> 🌊 Run the Washer</label>
+                <label><input type="checkbox" id="chore4" onchange="saveChores()"> 🍽️ Run the Dishwasher</label>
+                <label><input type="checkbox" id="chore5" onchange="saveChores()"> 🍳 Use the Oven</label>
+                <label><input type="checkbox" id="chore6" onchange="saveChores()"> 🍜 Use the Microwave</label>
+                <label><input type="checkbox" id="chore7" onchange="saveChores()"> ❄️ Set Central AC</label>
+                <label><input type="checkbox" id="chore8" onchange="saveChores()"> 🔥 Set Central Heater</label>
+                <label><input type="checkbox" id="chore9" onchange="saveChores()"> 🔌 Use Portable >300W</label>
+            </div>
+            <button class="app-btn" onclick="resetChores()">Reset List for Tomorrow</button>
+        </div>
+
+    </div>
+
     <script>
+        const rates = { green: 0.39, yellow: 0.58, red: 0.61 };
+        let currentRate = rates.green;
+
         function updateDashboard() {
             const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            // Added second: '2-digit' right here:
+            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
             
             const hour = now.getHours(); 
             
             document.getElementById('green-card').classList.remove('active-now');
             document.getElementById('yellow-card').classList.remove('active-now');
             document.getElementById('red-card').classList.remove('active-now');
+            
+            const alertBanner = document.getElementById('red-alert');
 
             if (hour >= 0 && hour < 15) {
                 document.getElementById('green-card').classList.add('active-now');
+                currentRate = rates.green;
+                alertBanner.style.display = 'none';
             } else if (hour >= 16 && hour < 21) {
                 document.getElementById('red-card').classList.add('active-now');
+                currentRate = rates.red;
+                alertBanner.style.display = 'block';
             } else {
                 document.getElementById('yellow-card').classList.add('active-now');
+                currentRate = rates.yellow;
+                alertBanner.style.display = 'none';
             }
+            calcTotal();
         }
         
-        setInterval(updateDashboard, 1000);
+        function calcTotal() {
+            const checkboxes = document.querySelectorAll('#appliance-list input[type="checkbox"]:checked');
+            let totalKwh = 0;
+            
+            checkboxes.forEach(box => {
+                totalKwh += parseFloat(box.value);
+            });
+            
+            if(totalKwh === 0) {
+                document.getElementById('calc-result').innerHTML = "Select appliances to estimate cost.";
+                return;
+            }
+
+            const costNow = (totalKwh * currentRate).toFixed(2);
+            const costGreen = (totalKwh * rates.green).toFixed(2);
+            
+            let message = `Running these right now costs $${costNow}.`;
+            
+            if (currentRate > rates.green) {
+                const savings = (costNow - costGreen).toFixed(2);
+                message += `<br><span style="color:#4caf50;">Wait for the Green Light to save $${savings}!</span>`;
+            } else {
+                message += `<br><span style="color:#4caf50;">Great timing! You are paying the lowest rate!</span>`;
+            }
+            document.getElementById('calc-result').innerHTML = message;
+        }
+
+        // Chore Tracker Functions using a loop
+        function saveChores() {
+            for(let i = 1; i <= 9; i++) {
+                localStorage.setItem('chore' + i, document.getElementById('chore' + i).checked);
+            }
+        }
+
+        function loadChores() {
+            for(let i = 1; i <= 9; i++) {
+                let checkbox = document.getElementById('chore' + i);
+                if (checkbox) {
+                    checkbox.checked = JSON.parse(localStorage.getItem('chore' + i) || 'false');
+                }
+            }
+        }
+
+        function resetChores() {
+            for(let i = 1; i <= 9; i++) {
+                let checkbox = document.getElementById('chore' + i);
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+            }
+            saveChores();
+        }
+
+        loadChores();
+        setInterval(updateDashboard, 1000); // This updates the clock every 1000 milliseconds (1 second)
         updateDashboard(); 
     </script>
 </body>
