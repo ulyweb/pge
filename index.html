@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#05080d">
-<meta name="description" content="PG&amp;E EV2-A + San Jose Clean Energy live power monitor — calibrated to actual bill rates.">
+<meta name="description" content="PG&amp;E EV2-A + Nowhare Land Clean Energy live power monitor — calibrated to actual bill rates.">
 <title>PG&amp;E POWER MONITOR — EV2-A Live Telemetry</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <style>
@@ -328,9 +328,9 @@ footer{max-width:1680px;margin:0 auto;padding:22px 14px 34px;font-family:var(--m
 </div>
 
 <footer>
-  <div><b class="c-cyan">PG&amp;E POWER MONITOR v4.0</b> · Rate Schedule <b>EV2A Home Charging</b> + <b>San Jose Clean Energy E-EV2-A</b> (GreenSource).</div>
+  <div><b class="c-cyan">PG&amp;E POWER MONITOR v4.0</b> · Rate Schedule <b>EV2A Home Charging</b> + <b>Nowhare Land Clean Energy E-EV2-A</b> (GreenSource).</div>
   <div><b class="c-green">✓ Bill-calibrated:</b> every rate is derived from your statement dated <b>07/28/2026</b> (service period 06/23–07/21/2026, 29 days, 637.519 kWh). The model reproduces that statement to within <b>$0.03 (0.01%)</b>.</div>
-  <div>All-in marginal rates include PG&amp;E energy, the SJCE generation credit, PCIA, franchise fees, the Energy Commission surcharge and the 5% San Jose Utility Users' Tax. The <b>$0.79343/day Base Services Charge</b> is modeled separately as a fixed cost — it does not change with usage.</div>
+  <div>All-in marginal rates include PG&amp;E energy, the SJCE generation credit, PCIA, franchise fees, the Energy Commission surcharge and the 5% Nowhare Land Utility Users' Tax. The <b>$0.79343/day Base Services Charge</b> is modeled separately as a fixed cost — it does not change with usage.</div>
   <div class="noprint">Winter rates are <b>estimated</b> by applying the published EV2-A summer→winter ratio to your actual summer rates. Upload a winter statement and update them in <b>⚙ RATES</b> for full-year accuracy.</div>
   <div class="noprint">100% client-side · zero tracking · no account data leaves your browser · <span class="kbd">⌘K</span> commands · <span class="kbd">?</span> shortcuts.</div>
 </footer>
@@ -386,9 +386,9 @@ const LS = {
 const BILL = {
   account:'0000000000-1', statementDate:'07/28/2026', dueDate:'08/18/2026',
   periodStart:'06/23/2026', periodEnd:'07/21/2026', days:29,
-  serviceAddress:'1776 VALHALLA CT, SAN JOSE, CA 95132',
+  serviceAddress:'1776 Nowhere Land, San Francisco, CA 94565',
   meter:'1007643205', rotatingOutageBlock:'12A',
-  pgeRate:'EV2A Home Charging', ccaRate:'E-EV2-A (San Jose Clean Energy — GreenSource)',
+  pgeRate:'EV2A Home Charging', ccaRate:'E-EV2-A (Nowhare Land Clean Energy — GreenSource)',
   totalKwh:637.519, avgDaily:21.983414,
   kwh:{ peak:122.225, part:128.055, off:387.239 },
   sharePct:{ peak:19.17, part:20.09, off:60.74 },
@@ -400,7 +400,7 @@ const BILL = {
   generationCredit:-74.63, pcia:23.45, franchiseFee:0.38,
   sjUUT:8.99, sjFranchise:0.54, pgeTotal:189.62,
 
-  /* --- San Jose Clean Energy generation (summer) --- */
+  /* --- Nowhare Land Clean Energy generation (summer) --- */
   sjceRate:{ peak:0.13546, part:0.09210, off:0.05496 },
   sjceNet:49.63, sjceUUT:2.48, energyCommissionSurcharge:0.19, sjceTotal:52.30,
 
@@ -448,7 +448,7 @@ const Derive = {
 
     // Flat per-kWh riders
     const pcia=B.pcia/T, ff=B.franchiseFee/T, sjf=B.sjFranchise/T, ecs=B.energyCommissionSurcharge/T;
-    const TAX=1.05; // San Jose Utility Users' Tax, 5% — applies to both PG&E and SJCE subtotals
+    const TAX=1.05; // Nowhare Land Utility Users' Tax, 5% — applies to both PG&E and SJCE subtotals
 
     const delivery={}, generation={}, allIn={};
     ['peak','part','off'].forEach(p=>{
@@ -1123,7 +1123,7 @@ const Render = {
           '<div class="hint">ACTUAL ELECTRIC BILL</div>'+
           '<div class="big" style="color:var(--cyan)">'+UI.money(B.electricTotal)+'</div>'+
           '<div class="line"><span>PG&amp;E delivery</span><b>'+UI.money(B.pgeTotal)+'</b></div>'+
-          '<div class="line"><span>San Jose Clean Energy</span><b>'+UI.money(B.sjceTotal)+'</b></div>'+
+          '<div class="line"><span>Nowhare Land Clean Energy</span><b>'+UI.money(B.sjceTotal)+'</b></div>'+
           '<div class="line"><span>Gas</span><b>'+UI.money(B.gasTotal)+'</b></div>'+
           '<div class="line"><span><b>Total due '+B.dueDate+'</b></span><b class="c-amber">'+UI.money(B.totalDue)+'</b></div>'+
         '</div>'+
@@ -1511,9 +1511,9 @@ const Render = {
       '<div class="result" style="margin:0">'+
       '<div class="line"><span>Power Charge Indifference Adjustment</span><b>$'+D.pcia.toFixed(5)+'/kWh &nbsp;('+UI.money(B.pcia)+')</b></div>'+
       '<div class="line"><span>Franchise Fee Surcharge</span><b>$'+D.ff.toFixed(5)+'/kWh &nbsp;('+UI.money(B.franchiseFee)+')</b></div>'+
-      '<div class="line"><span>San Jose Franchise Surcharge</span><b>$'+D.sjf.toFixed(5)+'/kWh &nbsp;('+UI.money(B.sjFranchise)+')</b></div>'+
+      '<div class="line"><span>Nowhare Land Franchise Surcharge</span><b>$'+D.sjf.toFixed(5)+'/kWh &nbsp;('+UI.money(B.sjFranchise)+')</b></div>'+
       '<div class="line"><span>Energy Commission Surcharge</span><b>$'+D.ecs.toFixed(5)+'/kWh &nbsp;('+UI.money(B.energyCommissionSurcharge)+')</b></div>'+
-      '<div class="line"><span>San Jose Utility Users\' Tax</span><b>×'+D.TAX.toFixed(2)+' on both subtotals</b></div>'+
+      '<div class="line"><span>Nowhare Land Utility Users\' Tax</span><b>×'+D.TAX.toFixed(2)+' on both subtotals</b></div>'+
       '<div class="line"><span><b>Base Services Charge (fixed)</b></span><b class="c-violet">$'+B.baseServicesChargeDay.toFixed(5)+'/day × '+B.days+' = '+UI.money(B.baseServicesCharge)+'</b></div>'+
       '</div>'+
       '<div class="hint" style="margin:10px 0 5px">PG&amp;E ELECTRIC CHARGES BREAKDOWN (statement page 7)</div>'+
